@@ -1,0 +1,11 @@
+# Keep the Hugging Face Space image small + clean.
+venv/
+frontend/
+vibeseek_data/
+__pycache__/
+*.pyc
+Notes/
+.git/
+.gitignore
+.env
+*.pkl

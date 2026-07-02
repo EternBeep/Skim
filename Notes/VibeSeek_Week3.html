@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VibeSeek — Week 3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --bg:#0e0e11; --panel:#16161d; --panel2:#13131a; --line:#2a2a38;
+    --ink:#e8e6f0; --mut:#8a8a99; --dim:#5b5b6a;
+    --p1:#a78bfa; --p2:#ec4899; --p3:#f97316; --teal:#5DCAA5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--ink);
+    font-family:'DM Sans',system-ui,Segoe UI,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  @page{size:A4; margin:0;}
+  .page{position:relative; width:210mm; min-height:296mm; padding:18mm 16mm; page-break-after:always; overflow:hidden;}
+  .page:last-child{page-break-after:auto;}
+  code,.mono{font-family:'Space Mono',ui-monospace,Consolas,monospace;}
+
+  h1{font-family:'Space Mono',monospace; font-weight:700; letter-spacing:-.02em; line-height:1.05;}
+  h2{font-family:'Space Mono',monospace; font-size:24px; font-weight:700; letter-spacing:-.01em; margin-bottom:4px;
+     background:linear-gradient(120deg,var(--p1),var(--p2) 60%,var(--p3));
+     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  h3{font-size:15px; font-weight:600; color:var(--p1); margin:18px 0 8px; letter-spacing:.02em;}
+  p{font-size:12.5px; line-height:1.62; color:#cfcde0; margin-bottom:9px;}
+  .kicker{font-family:'Space Mono',monospace; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--p1);}
+  .sec-no{font-family:'Space Mono',monospace; color:var(--p3); font-size:12px;}
+  a{color:var(--p1); text-decoration:none; border-bottom:1px solid rgba(167,139,250,.35);}
+  b,strong{color:#fff;}
+  .hr{height:1px; background:linear-gradient(90deg,var(--line),transparent); margin:14px 0;}
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:10px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;}
+  .chip{display:inline-block; font-family:'Space Mono',monospace; font-size:10px; padding:3px 9px; border-radius:20px;
+        border:1px solid var(--line); color:var(--p1); background:#1a1330; margin:2px 3px 2px 0;}
+  .pill{font-family:'Space Mono',monospace; font-size:10px; padding:2px 8px; border-radius:6px; background:#1e1e28; color:var(--teal);}
+
+  table{width:100%; border-collapse:collapse; margin:8px 0 4px; font-size:11.5px;}
+  th{text-align:left; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+     color:var(--dim); padding:8px 9px; border-bottom:1px solid var(--line);}
+  td{padding:8px 9px; border-bottom:1px solid #1f1f29; color:#cdccdc; vertical-align:top;}
+  td b{color:var(--p1); font-weight:600;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.012);}
+
+  .num{font-family:'Space Mono',monospace; color:var(--p3); font-size:13px;}
+  .lead{font-size:13.5px; color:var(--mut); line-height:1.6;}
+  .foot{position:absolute; bottom:9mm; left:16mm; right:16mm; display:flex; justify-content:space-between;
+        font-family:'Space Mono',monospace; font-size:9px; color:var(--dim); letter-spacing:.06em;}
+  .tag{display:inline-block; padding:2px 8px; border-radius:5px; font-size:10px; font-weight:600;}
+  .ok{background:rgba(15,110,86,.25); color:var(--teal);}
+  .new{background:rgba(124,58,237,.2); color:var(--p1);}
+  ul{margin:4px 0 10px 16px;} li{font-size:12px; line-height:1.55; color:#cdccdc; margin-bottom:4px;}
+  .small{font-size:11px; color:var(--mut);}
+  .center{text-align:center;}
+  .svgwrap{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:10px; margin:10px 0;}
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<div class="page" style="display:flex; flex-direction:column; justify-content:center;
+  background:radial-gradient(900px 600px at 80% -10%, rgba(124,58,237,.22), transparent 60%),
+             radial-gradient(700px 500px at -10% 110%, rgba(249,115,22,.16), transparent 55%), var(--bg);">
+  <div class="kicker" style="margin-bottom:18px;">Project Notebook · Build Log</div>
+  <h1 style="font-size:74px;
+    background:linear-gradient(135deg,var(--p1) 0%,var(--p2) 55%,var(--p3) 100%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">VibeSeek</h1>
+  <div style="font-family:'Space Mono',monospace; font-size:20px; color:var(--ink); margin-top:6px; letter-spacing:.02em;">Week&nbsp;3 — Going Cloud ☁</div>
+  <p style="font-size:15px; color:var(--mut); max-width:430px; margin-top:18px; line-height:1.6;">
+    Semantic video search — paste a YouTube URL, describe a vibe, jump to that moment.
+    Week 3 takes it from a local demo to a <b>globally-cached, multi-user, deployable</b> cloud app.
+  </p>
+  <div style="margin-top:26px;">
+    <span class="chip">Pinecone</span><span class="chip">Cloudinary</span><span class="chip">Upstash Redis</span>
+    <span class="chip">Hugging Face Spaces</span><span class="chip">Vercel</span>
+  </div>
+  <div style="margin-top:34px; display:flex; gap:26px; font-family:'Space Mono',monospace; font-size:11px; color:var(--dim);">
+    <div><div style="color:var(--p1); font-size:22px;">7/7</div>goals shipped</div>
+    <div><div style="color:var(--p2); font-size:22px;">11</div>files written</div>
+    <div><div style="color:var(--p3); font-size:22px;">~4.5min</div>index time (CPU)</div>
+  </div>
+  <div class="foot"><span>VibeSeek · Week 3 Documentation</span><span>Same brains, cloud body.</span></div>
+</div>
+
+<!-- ============================ 1. OVERVIEW ============================ -->
+<div class="page">
+  <div class="kicker">01 · The Big Picture</div>
+  <h2>What Week 3 actually changed</h2>
+  <p class="lead">Week 2 was a working demo that ran <b>only on your laptop</b>. Week 3 is a plumbing upgrade: the
+  <b>intelligence stayed identical</b> (CLIP + Whisper + librosa + Reciprocal Rank Fusion), but storage, media, and
+  state all moved to the cloud — so it caches globally, survives restarts, and won't crash under concurrent users.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0;">The one-sentence summary</h3>
+    <p style="margin-bottom:0;">Replace every <b>local file</b> (ChromaDB on disk, JPEGs on disk, an in-memory registry)
+    with a <b>cloud service</b> (Pinecone, Cloudinary, Redis), add a <b>global cache</b> so repeated URLs are instant for
+    everyone, and a <b>single worker</b> so simultaneous indexing can't take the server down.</p>
+  </div>
+
+  <h3>Before → After at a glance</h3>
+  <table>
+    <tr><th>Concern</th><th>Week 2 (local)</th><th>Week 3 (cloud)</th></tr>
+    <tr><td><b>Vectors</b></td><td>ChromaDB on disk</td><td>Pinecone (1 index, 512-dim, namespace/video)</td></tr>
+    <tr><td><b>Thumbnails</b></td><td>JPEGs on disk, served by FastAPI</td><td>Cloudinary CDN URLs</td></tr>
+    <tr><td><b>Registry</b></td><td>local <code>registry.json</code></td><td>Upstash Redis hash (global)</td></tr>
+    <tr><td><b>Repeat URLs</b></td><td>re-download every time</td><td>cache check → instant for all users</td></tr>
+    <tr><td><b>Concurrency</b></td><td>all jobs run at once (OOM risk)</td><td>single serialized worker</td></tr>
+    <tr><td><b>Job state</b></td><td>in-memory dict (lost on restart)</td><td>Redis hash (survives restart)</td></tr>
+    <tr><td><b>Whisper</b></td><td><code>small</code></td><td><code>tiny</code> (CPU speed)</td></tr>
+    <tr><td><b>CLIP batch</b></td><td>32</td><td>16 (lower RAM)</td></tr>
+    <tr><td><b>Deployment</b></td><td>localhost only</td><td>HF Spaces + Vercel</td></tr>
+  </table>
+
+  <div class="grid3" style="margin-top:12px;">
+    <div class="card center"><div class="num">☁</div><div class="small" style="margin-top:4px;"><b>Cloud-backed</b><br>nothing lives on one disk</div></div>
+    <div class="card center"><div class="num">⚡</div><div class="small" style="margin-top:4px;"><b>Globally cached</b><br>indexed once = fast forever</div></div>
+    <div class="card center"><div class="num">🛡</div><div class="small" style="margin-top:4px;"><b>Crash-safe</b><br>jobs queue, don't pile up</div></div>
+  </div>
+  <div class="foot"><span>01 · Overview</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 2. ARCHITECTURE ============================ -->
+<div class="page">
+  <div class="kicker">02 · System Architecture</div>
+  <h2>How the pieces fit together</h2>
+  <p class="lead">Three independent cloud services hang off one backend. The frontend (Vercel) only ever talks to the
+  backend (HF Spaces); the backend talks to Pinecone, Cloudinary and Redis.</p>
+
+  <div class="svgwrap">
+  <svg viewBox="0 0 1000 600" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#a78bfa"/><stop offset="0.5" stop-color="#ec4899"/><stop offset="1" stop-color="#f97316"/>
+      </linearGradient>
+      <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#7c5cbf"/>
+      </marker>
+    </defs>
+    <!-- user -->
+    <rect x="40" y="250" width="150" height="80" rx="14" fill="#16161d" stroke="#2a2a38"/>
+    <text x="115" y="285" fill="#e8e6f0" font-size="17" text-anchor="middle">👤 User</text>
+    <text x="115" y="306" fill="#8a8a99" font-size="12" text-anchor="middle">browser</text>
+    <!-- frontend -->
+    <rect x="250" y="240" width="190" height="100" rx="14" fill="#1a1330" stroke="#7c3aed"/>
+    <text x="345" y="276" fill="#c4b5fd" font-size="16" text-anchor="middle" font-weight="700">Frontend</text>
+    <text x="345" y="298" fill="#8a8a99" font-size="11.5" text-anchor="middle">React + Vite</text>
+    <text x="345" y="316" fill="#5DCAA5" font-size="11" text-anchor="middle">▲ Vercel</text>
+    <!-- backend -->
+    <rect x="500" y="210" width="210" height="160" rx="16" fill="url(#g1)" opacity="0.12"/>
+    <rect x="500" y="210" width="210" height="160" rx="16" fill="none" stroke="#ec4899"/>
+    <text x="605" y="246" fill="#f0eeff" font-size="17" text-anchor="middle" font-weight="700">Backend API</text>
+    <text x="605" y="268" fill="#cfcde0" font-size="11.5" text-anchor="middle">FastAPI · CLIP · Whisper</text>
+    <text x="605" y="285" fill="#cfcde0" font-size="11.5" text-anchor="middle">librosa · worker</text>
+    <text x="605" y="312" fill="#f97316" font-size="12" text-anchor="middle">🤗 Hugging Face Spaces</text>
+    <text x="605" y="332" fill="#8a8a99" font-size="10.5" text-anchor="middle">Docker · 16GB RAM · CPU</text>
+    <!-- services -->
+    <rect x="790" y="70"  width="180" height="86" rx="13" fill="#16161d" stroke="#2a2a38"/>
+    <text x="880" y="104" fill="#a78bfa" font-size="15" text-anchor="middle" font-weight="700">Pinecone</text>
+    <text x="880" y="125" fill="#8a8a99" font-size="11" text-anchor="middle">vector DB (512-dim)</text>
+    <rect x="790" y="257" width="180" height="86" rx="13" fill="#16161d" stroke="#2a2a38"/>
+    <text x="880" y="291" fill="#ec4899" font-size="15" text-anchor="middle" font-weight="700">Cloudinary</text>
+    <text x="880" y="312" fill="#8a8a99" font-size="11" text-anchor="middle">frame thumbnails (CDN)</text>
+    <rect x="790" y="444" width="180" height="86" rx="13" fill="#16161d" stroke="#2a2a38"/>
+    <text x="880" y="478" fill="#f97316" font-size="15" text-anchor="middle" font-weight="700">Upstash Redis</text>
+    <text x="880" y="499" fill="#8a8a99" font-size="11" text-anchor="middle">cache · job state</text>
+    <!-- arrows -->
+    <line x1="190" y1="290" x2="248" y2="290" stroke="#7c5cbf" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="440" y1="290" x2="498" y2="290" stroke="#7c5cbf" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="468" y="282" fill="#8a8a99" font-size="9" text-anchor="middle">HTTPS</text>
+    <line x1="710" y1="250" x2="788" y2="135" stroke="#7c5cbf" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="710" y1="290" x2="788" y2="300" stroke="#7c5cbf" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="710" y1="335" x2="788" y2="470" stroke="#7c5cbf" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="500" y="470" fill="#5b5b6a" font-size="11" font-family="Space Mono, monospace">YouTube ──► yt-dlp ──► frames ──► embeddings ──► cloud</text>
+  </svg>
+  </div>
+
+  <div class="grid3">
+    <div class="card"><span class="chip">stores</span><p class="small" style="margin:6px 0 0;"><b>Pinecone</b> holds the math: 512-dim vectors for every frame &amp; spoken line, searched by cosine similarity.</p></div>
+    <div class="card"><span class="chip">serves</span><p class="small" style="margin:6px 0 0;"><b>Cloudinary</b> hosts the JPEG thumbnails on a global CDN, so images load fast and the server stays stateless.</p></div>
+    <div class="card"><span class="chip">remembers</span><p class="small" style="margin:6px 0 0;"><b>Redis</b> is the shared memory: "who's indexed what" + live job status, readable by anyone.</p></div>
+  </div>
+  <div class="foot"><span>02 · Architecture</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 3. MIND MAP ============================ -->
+<div class="page">
+  <div class="kicker">03 · Mind Map</div>
+  <h2>Week 3 at a single glance</h2>
+  <p class="lead">Six branches, one idea per branch. If you can explain this map, you can explain the whole week.</p>
+
+  <div class="svgwrap">
+  <svg viewBox="0 0 1000 660" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+    <defs>
+      <radialGradient id="core" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#3b1d6e"/>
+      </radialGradient>
+    </defs>
+    <!-- branches (drawn first, behind nodes) -->
+    <g stroke-width="2.5" fill="none" opacity="0.55">
+      <path d="M500,330 C380,250 300,180 210,150" stroke="#a78bfa"/>
+      <path d="M500,330 C400,360 320,430 220,470" stroke="#ec4899"/>
+      <path d="M500,330 C470,210 470,150 500,95" stroke="#c4b5fd"/>
+      <path d="M500,330 C620,250 700,180 790,150" stroke="#f97316"/>
+      <path d="M500,330 C600,360 690,430 785,475" stroke="#5DCAA5"/>
+      <path d="M500,330 C500,460 500,520 500,575" stroke="#f0997b"/>
+    </g>
+    <!-- core -->
+    <circle cx="500" cy="330" r="64" fill="url(#core)" stroke="#a78bfa"/>
+    <text x="500" y="324" fill="#fff" font-size="16" text-anchor="middle" font-weight="700">VibeSeek</text>
+    <text x="500" y="344" fill="#d8c8ff" font-size="13" text-anchor="middle">Week 3</text>
+
+    <!-- node helper boxes -->
+    <!-- 1 storage -->
+    <rect x="70" y="110" width="190" height="78" rx="12" fill="#16161d" stroke="#a78bfa"/>
+    <text x="165" y="138" fill="#a78bfa" font-size="13.5" text-anchor="middle" font-weight="700">① Storage</text>
+    <text x="165" y="158" fill="#cfcde0" font-size="10.5" text-anchor="middle">Pinecone vectors</text>
+    <text x="165" y="174" fill="#8a8a99" font-size="10" text-anchor="middle">pad 384→512 · namespaces</text>
+    <!-- 2 media -->
+    <rect x="60" y="432" width="200" height="78" rx="12" fill="#16161d" stroke="#ec4899"/>
+    <text x="160" y="460" fill="#ec4899" font-size="13.5" text-anchor="middle" font-weight="700">② Media</text>
+    <text x="160" y="480" fill="#cfcde0" font-size="10.5" text-anchor="middle">Cloudinary CDN</text>
+    <text x="160" y="496" fill="#8a8a99" font-size="10" text-anchor="middle">frame JPEGs → URLs</text>
+    <!-- 3 cache -->
+    <rect x="405" y="40" width="190" height="78" rx="12" fill="#16161d" stroke="#c4b5fd"/>
+    <text x="500" y="68" fill="#c4b5fd" font-size="13.5" text-anchor="middle" font-weight="700">③ Cache</text>
+    <text x="500" y="88" fill="#cfcde0" font-size="10.5" text-anchor="middle">Redis registry</text>
+    <text x="500" y="104" fill="#8a8a99" font-size="10" text-anchor="middle">skip re-downloads</text>
+    <!-- 4 compute -->
+    <rect x="740" y="110" width="200" height="78" rx="12" fill="#16161d" stroke="#f97316"/>
+    <text x="840" y="138" fill="#f97316" font-size="13.5" text-anchor="middle" font-weight="700">④ Compute</text>
+    <text x="840" y="158" fill="#cfcde0" font-size="10.5" text-anchor="middle">HF Spaces (CPU)</text>
+    <text x="840" y="174" fill="#8a8a99" font-size="10" text-anchor="middle">batch 16 · whisper-tiny</text>
+    <!-- 5 queue -->
+    <rect x="735" y="436" width="205" height="78" rx="12" fill="#16161d" stroke="#5DCAA5"/>
+    <text x="837" y="464" fill="#5DCAA5" font-size="13.5" text-anchor="middle" font-weight="700">⑤ Queue</text>
+    <text x="837" y="484" fill="#cfcde0" font-size="10.5" text-anchor="middle">single worker</text>
+    <text x="837" y="500" fill="#8a8a99" font-size="10" text-anchor="middle">serialized = no crash</text>
+    <!-- 6 ship -->
+    <rect x="405" y="575" width="190" height="70" rx="12" fill="#16161d" stroke="#f0997b"/>
+    <text x="500" y="602" fill="#f0997b" font-size="13.5" text-anchor="middle" font-weight="700">⑥ Ship</text>
+    <text x="500" y="622" fill="#cfcde0" font-size="10.5" text-anchor="middle">Vercel + Docker · free tier</text>
+  </svg>
+  </div>
+  <p class="small center" style="margin-top:2px;">Each numbered branch maps 1:1 to a Week-3 goal. The next pages zoom into each one.</p>
+  <div class="foot"><span>03 · Mind Map</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 4. THE 7 GOALS ============================ -->
+<div class="page">
+  <div class="kicker">04 · Scope</div>
+  <h2>The 7 goals — and how each was met</h2>
+  <table>
+    <tr><th>#</th><th>Goal</th><th>How it was done</th><th></th></tr>
+    <tr><td class="num">1</td><td><b>Cloud vector DB</b></td><td>Pinecone single 512-dim index; metadata: video_id, timestamp, image_path, transcript_chunk, source</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">2</td><td><b>Cloud frame storage</b></td><td>Cloudinary upload → CDN URLs served to the UI instead of local files</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">3</td><td><b>Video cache check</b></td><td>Resolve YouTube id without downloading; if in Redis registry, skip everything</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">4</td><td><b>Job queue</b></td><td>Single worker drains jobs one-by-one; state stored in Redis</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">5</td><td><b>CPU optimization</b></td><td>CLIP batch=16, whisper-tiny → full index ~4.5 min on CPU</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">6</td><td><b>Frontend API URL</b></td><td>Reads <code>VITE_API_BASE_URL</code> so one build works in dev &amp; prod</td><td><span class="tag ok">done</span></td></tr>
+    <tr><td class="num">7</td><td><b>Free tier, no card</b></td><td>Cloudinary + Pinecone + Upstash + HF Spaces + Vercel — all free</td><td><span class="tag ok">done</span></td></tr>
+  </table>
+
+  <div class="card" style="margin-top:14px; border-color:#5a4a18; background:#1c1808;">
+    <h3 style="margin-top:0; color:#fbbf24;">⚠ Two honest deviations from the original plan</h3>
+    <p style="margin-bottom:6px;"><b>R2 → Cloudinary.</b> Cloudflare R2 requires a credit card to activate — which breaks goal #7. Cloudinary
+    gives 25&nbsp;GB free with <b>no card</b> and a built-in image CDN, so it's a strictly better fit for thumbnails.</p>
+    <p style="margin-bottom:6px;"><b>Render → Hugging Face Spaces.</b> Render's free tier is 512&nbsp;MB RAM — torch + CLIP + Whisper would
+    get OOM-killed. HF Spaces gives <b>16&nbsp;GB RAM, no card</b>, and actually fits the model stack.</p>
+    <p style="margin-bottom:0;"><b>Redis BLPOP → in-process queue.</b> Upstash's free tier drops long-idle blocking
+    connections, so a persistent <code>BLPOP</code> worker got stuck. Since HF runs a single instance, an in-process queue
+    serializes jobs just as well — and Redis still stores job state + the global cache.</p>
+  </div>
+  <div class="foot"><span>04 · The 7 Goals</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 5. INDEXING FLOW ============================ -->
+<div class="page">
+  <div class="kicker">05 · Data Flow — Indexing</div>
+  <h2>What happens when you index a video</h2>
+  <p class="lead">One request, eight steps, all on a single background worker. Status is written to Redis after every step
+  so the frontend's progress bar is always live.</p>
+
+  <div class="svgwrap">
+  <svg viewBox="0 0 1000 720" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+    <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5DCAA5"/></marker></defs>
+    <!-- decision -->
+    <rect x="330" y="20" width="340" height="56" rx="12" fill="#1a1330" stroke="#7c3aed"/>
+    <text x="500" y="44" fill="#c4b5fd" font-size="14" text-anchor="middle" font-weight="700">POST /index → resolve YouTube id</text>
+    <text x="500" y="63" fill="#8a8a99" font-size="11" text-anchor="middle">get_video_id() — no download yet</text>
+
+    <path d="M500,76 L500,108" stroke="#5DCAA5" stroke-width="2" marker-end="url(#a2)"/>
+    <rect x="350" y="110" width="300" height="50" rx="12" fill="#16161d" stroke="#2a2a38"/>
+    <text x="500" y="132" fill="#e8e6f0" font-size="13" text-anchor="middle">Already in Redis registry?</text>
+    <text x="500" y="150" fill="#8a8a99" font-size="10.5" text-anchor="middle">is_indexed(video_id)</text>
+
+    <!-- yes branch -->
+    <path d="M650,135 L820,135" stroke="#5DCAA5" stroke-width="2" marker-end="url(#a2)"/>
+    <text x="735" y="126" fill="#5DCAA5" font-size="11" text-anchor="middle">YES (cache hit)</text>
+    <rect x="820" y="108" width="160" height="54" rx="12" fill="#102a20" stroke="#5DCAA5"/>
+    <text x="900" y="131" fill="#5DCAA5" font-size="12.5" text-anchor="middle" font-weight="700">Return instantly</text>
+    <text x="900" y="150" fill="#8a8a99" font-size="10" text-anchor="middle">no work — goal #3</text>
+
+    <!-- no branch -->
+    <path d="M500,160 L500,190" stroke="#5DCAA5" stroke-width="2" marker-end="url(#a2)"/>
+    <text x="540" y="180" fill="#8a8a99" font-size="11">NO → enqueue</text>
+
+    <!-- pipeline steps -->
+    <g>
+      <!-- step boxes -->
+      <rect x="120" y="195" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="223" fill="#f97316" font-size="13" font-family="Space Mono, monospace">1</text>
+      <text x="200" y="216" fill="#e8e6f0" font-size="12.5">Download + sample frames</text>
+      <text x="200" y="233" fill="#8a8a99" font-size="10.5">yt-dlp → MP4, OpenCV → 1 frame / 2s</text>
+      <text x="860" y="223" fill="#5DCAA5" font-size="10" text-anchor="end">downloading</text>
+
+      <rect x="120" y="249" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="277" fill="#f97316" font-size="13" font-family="Space Mono, monospace">2</text>
+      <text x="200" y="270" fill="#e8e6f0" font-size="12.5">CLIP-embed every frame (batch 16)</text>
+      <text x="200" y="287" fill="#8a8a99" font-size="10.5">512-dim vector per frame — "what was seen"</text>
+      <text x="860" y="277" fill="#5DCAA5" font-size="10" text-anchor="end">embedding</text>
+
+      <rect x="120" y="303" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="331" fill="#f97316" font-size="13" font-family="Space Mono, monospace">3</text>
+      <text x="200" y="324" fill="#e8e6f0" font-size="12.5">Transcribe speech (whisper-tiny)</text>
+      <text x="200" y="341" fill="#8a8a99" font-size="10.5">timestamped chunks → MiniLM vectors — "what was said"</text>
+      <text x="860" y="331" fill="#5DCAA5" font-size="10" text-anchor="end">transcribing</text>
+
+      <rect x="120" y="357" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="385" fill="#f97316" font-size="13" font-family="Space Mono, monospace">4</text>
+      <text x="200" y="378" fill="#e8e6f0" font-size="12.5">Upload frames to Cloudinary</text>
+      <text x="200" y="395" fill="#8a8a99" font-size="10.5">each JPEG → a permanent CDN URL</text>
+      <text x="860" y="385" fill="#5DCAA5" font-size="10" text-anchor="end">uploading</text>
+
+      <rect x="120" y="411" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="439" fill="#f97316" font-size="13" font-family="Space Mono, monospace">5</text>
+      <text x="200" y="432" fill="#e8e6f0" font-size="12.5">Analyze audio (librosa)</text>
+      <text x="200" y="449" fill="#8a8a99" font-size="10.5">beat grid + energy peaks → cached in Redis</text>
+      <text x="860" y="439" fill="#5DCAA5" font-size="10" text-anchor="end">analyzing</text>
+
+      <rect x="120" y="465" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="493" fill="#f97316" font-size="13" font-family="Space Mono, monospace">6</text>
+      <text x="200" y="486" fill="#e8e6f0" font-size="12.5">Store vectors in Pinecone</text>
+      <text x="200" y="503" fill="#8a8a99" font-size="10.5">visual + spoken vectors, namespace = video_id</text>
+      <text x="860" y="493" fill="#5DCAA5" font-size="10" text-anchor="end">storing</text>
+
+      <rect x="120" y="519" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="547" fill="#f97316" font-size="13" font-family="Space Mono, monospace">7</text>
+      <text x="200" y="540" fill="#e8e6f0" font-size="12.5">Record in global Redis registry</text>
+      <text x="200" y="557" fill="#8a8a99" font-size="10.5">this is what makes goal #3 work for everyone</text>
+
+      <rect x="120" y="573" width="760" height="46" rx="10" fill="#16161d" stroke="#2a2a38"/>
+      <text x="150" y="601" fill="#f97316" font-size="13" font-family="Space Mono, monospace">8</text>
+      <text x="200" y="594" fill="#e8e6f0" font-size="12.5">Delete local temp files</text>
+      <text x="200" y="611" fill="#8a8a99" font-size="10.5">everything's in the cloud — keep the host stateless</text>
+
+      <rect x="350" y="640" width="300" height="50" rx="12" fill="#102a20" stroke="#5DCAA5"/>
+      <text x="500" y="664" fill="#5DCAA5" font-size="13" text-anchor="middle" font-weight="700">status = "done"</text>
+      <text x="500" y="681" fill="#8a8a99" font-size="10.5" text-anchor="middle">frontend stops polling, search unlocks</text>
+    </g>
+    <path d="M500,619 L500,638" stroke="#5DCAA5" stroke-width="2" marker-end="url(#a2)"/>
+  </svg>
+  </div>
+  <div class="foot"><span>05 · Indexing Flow</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 6. SEARCH FLOW + RRF ============================ -->
+<div class="page">
+  <div class="kicker">06 · Data Flow — Search</div>
+  <h2>"Seen + Said" search, fused</h2>
+  <p class="lead">Your query is encoded into <b>two</b> spaces at once, each space is searched separately in Pinecone, and the
+  two ranked lists are blended with <b>Reciprocal Rank Fusion (RRF)</b> — so a moment that's both <i>shown</i> and
+  <i>spoken</i> rises to the top.</p>
+
+  <div class="svgwrap">
+  <svg viewBox="0 0 1000 360" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+    <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7c5cbf"/></marker></defs>
+    <rect x="30" y="150" width="170" height="60" rx="12" fill="#1a1330" stroke="#7c3aed"/>
+    <text x="115" y="178" fill="#c4b5fd" font-size="13" text-anchor="middle" font-weight="700">"the beat drop"</text>
+    <text x="115" y="196" fill="#8a8a99" font-size="10.5" text-anchor="middle">your query</text>
+
+    <!-- two encoders -->
+    <rect x="270" y="60" width="190" height="64" rx="12" fill="#16161d" stroke="#a78bfa"/>
+    <text x="365" y="88" fill="#a78bfa" font-size="13" text-anchor="middle" font-weight="700">CLIP encode</text>
+    <text x="365" y="106" fill="#8a8a99" font-size="10.5" text-anchor="middle">512-dim (visual)</text>
+    <rect x="270" y="236" width="190" height="64" rx="12" fill="#16161d" stroke="#ec4899"/>
+    <text x="365" y="264" fill="#ec4899" font-size="13" text-anchor="middle" font-weight="700">MiniLM encode</text>
+    <text x="365" y="282" fill="#8a8a99" font-size="10.5" text-anchor="middle">384→512 (spoken)</text>
+
+    <!-- pinecone -->
+    <rect x="520" y="60" width="190" height="64" rx="12" fill="#16161d" stroke="#2a2a38"/>
+    <text x="615" y="88" fill="#e8e6f0" font-size="12.5" text-anchor="middle">Pinecone query</text>
+    <text x="615" y="106" fill="#8a8a99" font-size="10" text-anchor="middle">filter source=visual</text>
+    <rect x="520" y="236" width="190" height="64" rx="12" fill="#16161d" stroke="#2a2a38"/>
+    <text x="615" y="264" fill="#e8e6f0" font-size="12.5" text-anchor="middle">Pinecone query</text>
+    <text x="615" y="282" fill="#8a8a99" font-size="10" text-anchor="middle">filter source=audio</text>
+
+    <!-- RRF -->
+    <rect x="770" y="148" width="200" height="64" rx="12" fill="url(#g1)" opacity="0.14"/>
+    <rect x="770" y="148" width="200" height="64" rx="12" fill="none" stroke="#f97316"/>
+    <text x="870" y="176" fill="#f0eeff" font-size="13" text-anchor="middle" font-weight="700">RRF fusion</text>
+    <text x="870" y="194" fill="#cfcde0" font-size="10" text-anchor="middle">rank-based blend → top-k</text>
+
+    <path d="M200,170 C235,150 240,110 268,98" stroke="#7c5cbf" stroke-width="2" fill="none" marker-end="url(#a3)"/>
+    <path d="M200,190 C235,210 240,250 268,262" stroke="#7c5cbf" stroke-width="2" fill="none" marker-end="url(#a3)"/>
+    <line x1="460" y1="92" x2="518" y2="92" stroke="#7c5cbf" stroke-width="2" marker-end="url(#a3)"/>
+    <line x1="460" y1="268" x2="518" y2="268" stroke="#7c5cbf" stroke-width="2" marker-end="url(#a3)"/>
+    <path d="M710,92 C745,110 745,150 768,165" stroke="#7c5cbf" stroke-width="2" fill="none" marker-end="url(#a3)"/>
+    <path d="M710,268 C745,250 745,210 768,195" stroke="#7c5cbf" stroke-width="2" fill="none" marker-end="url(#a3)"/>
+  </svg>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0;">Why two spaces?</h3>
+      <p style="margin-bottom:0;">CLIP understands <b>images</b> + short visual phrases. MiniLM understands <b>spoken
+      language</b>. A query like "someone says thank you" is a <i>spoken</i> match; "slow dramatic reveal" is a
+      <i>visual</i> one. Searching both and merging is the whole trick.</p></div>
+    <div class="card"><h3 style="margin-top:0;">Why RRF (not score-mixing)?</h3>
+      <p style="margin-bottom:0;">The two cosine scores live on different scales, so you can't just add them. RRF only
+      cares about <b>rank position</b> (1st, 2nd, 3rd…), so the lists combine fairly. Moments hitting in <b>both</b> lists
+      get tagged "Seen&nbsp;+&nbsp;Said".</p></div>
+  </div>
+
+  <div class="card" style="margin-top:4px;">
+    <h3 style="margin-top:0;">🧠 The clever bit: one index, two vector sizes</h3>
+    <p style="margin-bottom:0;">Pinecone indexes are fixed-width. CLIP is 512-dim, MiniLM is 384-dim. The fix:
+    <b>zero-pad MiniLM up to 512</b>. Because every search <b>filters by <code>source</code></b>, a padded vector is only ever
+    compared to other padded vectors — the trailing zeros cancel in both the dot-product and the norms, so cosine scores
+    are <b>mathematically identical</b> to native 384-dim. Two embedding spaces, one free-tier index.</p>
+  </div>
+  <div class="foot"><span>06 · Search Flow</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 7. FILE MAP ============================ -->
+<div class="page">
+  <div class="kicker">07 · The Code</div>
+  <h2>Every file, and what it does</h2>
+
+  <h3>New files</h3>
+  <table>
+    <tr><th>File</th><th>Responsibility</th></tr>
+    <tr><td><code>config.py</code></td><td>Loads all cloud credentials from <code>.env</code> in one place</td></tr>
+    <tr><td><code>storage.py</code></td><td>Cloudinary: <code>upload_frame()</code> → returns a CDN URL</td></tr>
+    <tr><td><code>redis_client.py</code></td><td>Redis connection + global registry + audio-analysis cache</td></tr>
+    <tr><td><code>vector_store.py</code> <span class="tag new">rewritten</span></td><td>Pinecone: create index, pad, upsert, query, has_video</td></tr>
+    <tr><td><code>job_queue.py</code></td><td>Single in-process worker; job state stored in Redis</td></tr>
+    <tr><td><code>check_cloud.py</code></td><td>Smoke test: confirms all 3 services connect before boot</td></tr>
+    <tr><td><code>Dockerfile</code></td><td>HF Spaces image (Python + ffmpeg + CPU torch, port 7860)</td></tr>
+    <tr><td><code>DEPLOY.md</code></td><td>Step-by-step deploy guide for HF Spaces + Vercel</td></tr>
+    <tr><td><code>.env.example</code> / <code>.gitignore</code> / <code>frontend/vercel.json</code></td><td>Config templates &amp; deploy settings</td></tr>
+  </table>
+
+  <h3>Edited files</h3>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>main.py</code> <span class="tag new">rewritten</span></td><td>Cache-check → enqueue → Cloudinary upload → Redis registry → cleanup; UTF-8 stdout fix</td></tr>
+    <tr><td><code>frame_extractor.py</code></td><td>+ <code>get_video_id()</code> (resolve id with no download)</td></tr>
+    <tr><td><code>clip_embedder.py</code></td><td>batch size 32 → <b>16</b></td></tr>
+    <tr><td><code>audio_transcriber.py</code></td><td>Whisper <code>small</code> → <b><code>tiny</code></b></td></tr>
+    <tr><td><code>requirements.txt</code></td><td>+ pinecone, cloudinary, redis, python-dotenv (chromadb removed)</td></tr>
+    <tr><td><code>frontend/src/App.jsx</code></td><td>API base from <code>VITE_API_BASE_URL</code>; Cloudinary thumbnails; new statuses</td></tr>
+  </table>
+
+  <div class="card" style="margin-top:10px;">
+    <h3 style="margin-top:0;">Unchanged on purpose</h3>
+    <p style="margin-bottom:0;">The ML brains — <code>text_embedder.py</code> (MiniLM) and <code>audio_analyzer.py</code>
+    (librosa) — were <b>not touched</b>. Search quality is identical to Week 2; only the infrastructure moved.</p>
+  </div>
+  <div class="foot"><span>07 · File Map</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 8. LEARNING RESOURCES ============================ -->
+<div class="page">
+  <div class="kicker">08 · Learn It · Ace It</div>
+  <h2>Study guide — videos &amp; docs</h2>
+  <p class="lead">New to all this? Here's a learning path. The YouTube links are <b>search links</b> that always surface the
+  freshest top tutorials (so they never go dead), paired with the official docs for each tool.</p>
+
+  <h3>① Core concepts (start here)</h3>
+  <table>
+    <tr><th>Topic</th><th>Watch</th><th>Read</th></tr>
+    <tr><td><b>Vector embeddings &amp; semantic search</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=vector+embeddings+semantic+search+explained">YouTube ▸</a></td>
+      <td><a href="https://www.pinecone.io/learn/vector-embeddings/">pinecone.io/learn</a></td></tr>
+    <tr><td><b>CLIP (image+text model)</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=openai+clip+model+explained">YouTube ▸</a></td>
+      <td><a href="https://openai.com/research/clip">openai.com/research/clip</a></td></tr>
+    <tr><td><b>Whisper (speech-to-text)</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=openai+whisper+python+tutorial">YouTube ▸</a></td>
+      <td><a href="https://github.com/openai/whisper">github.com/openai/whisper</a></td></tr>
+    <tr><td><b>Reciprocal Rank Fusion</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=reciprocal+rank+fusion+hybrid+search">YouTube ▸</a></td>
+      <td><a href="https://www.pinecone.io/learn/hybrid-search-intro/">hybrid search intro</a></td></tr>
+  </table>
+
+  <h3>② The cloud services (the heart of Week 3)</h3>
+  <table>
+    <tr><th>Service</th><th>Watch</th><th>Read</th></tr>
+    <tr><td><b>Pinecone</b> — vector DB</td>
+      <td><a href="https://www.youtube.com/results?search_query=pinecone+vector+database+python+tutorial">YouTube ▸</a></td>
+      <td><a href="https://docs.pinecone.io/guides/get-started/quickstart">docs.pinecone.io</a></td></tr>
+    <tr><td><b>Cloudinary</b> — media CDN</td>
+      <td><a href="https://www.youtube.com/results?search_query=cloudinary+python+upload+tutorial">YouTube ▸</a></td>
+      <td><a href="https://cloudinary.com/documentation/python_integration">cloudinary docs</a></td></tr>
+    <tr><td><b>Upstash Redis</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=upstash+redis+tutorial">YouTube ▸</a></td>
+      <td><a href="https://upstash.com/docs/redis/overall/getstarted">upstash.com/docs</a></td></tr>
+    <tr><td><b>Redis basics</b> (key/value, hashes)</td>
+      <td><a href="https://www.youtube.com/results?search_query=redis+crash+course">YouTube ▸</a></td>
+      <td><a href="https://redis.io/docs/latest/develop/data-types/">redis.io data types</a></td></tr>
+  </table>
+
+  <h3>③ Backend &amp; deployment</h3>
+  <table>
+    <tr><th>Topic</th><th>Watch</th><th>Read</th></tr>
+    <tr><td><b>FastAPI</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=fastapi+full+course">YouTube ▸</a></td>
+      <td><a href="https://fastapi.tiangolo.com/tutorial/">fastapi.tiangolo.com</a></td></tr>
+    <tr><td><b>Job queues / worker threads</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=python+queue+worker+thread+explained">YouTube ▸</a></td>
+      <td><a href="https://docs.python.org/3/library/queue.html">python queue docs</a></td></tr>
+    <tr><td><b>Docker basics</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=docker+tutorial+for+beginners">YouTube ▸</a></td>
+      <td><a href="https://docs.docker.com/get-started/">docs.docker.com</a></td></tr>
+    <tr><td><b>Deploy to Hugging Face Spaces (Docker)</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=deploy+fastapi+hugging+face+spaces+docker">YouTube ▸</a></td>
+      <td><a href="https://huggingface.co/docs/hub/spaces-sdks-docker">HF Spaces docs</a></td></tr>
+    <tr><td><b>Deploy Vite/React to Vercel</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=deploy+vite+react+app+to+vercel">YouTube ▸</a></td>
+      <td><a href="https://vercel.com/docs/frameworks/vite">vercel.com/docs</a></td></tr>
+    <tr><td><b>yt-dlp &amp; OpenCV frames</b></td>
+      <td><a href="https://www.youtube.com/results?search_query=yt-dlp+python+download+opencv+frames">YouTube ▸</a></td>
+      <td><a href="https://github.com/yt-dlp/yt-dlp#readme">yt-dlp readme</a></td></tr>
+  </table>
+
+  <div class="card" style="margin-top:8px; border-color:#3b6d11; background:#10180a;">
+    <p style="margin-bottom:0;"><b style="color:var(--teal);">Tip to ace the viva/demo:</b> be able to draw the
+    <i>indexing flow</i> (page 5) and explain the <i>zero-padding trick</i> (page 6) from memory. Those two are the
+    "wow, you actually understand it" moments.</p>
+  </div>
+  <div class="foot"><span>08 · Learning Resources</span><span>VibeSeek · Week 3</span></div>
+</div>
+
+<!-- ============================ 9. STATUS + GLOSSARY ============================ -->
+<div class="page">
+  <div class="kicker">09 · Where Things Stand</div>
+  <h2>Done, and what's left</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0; color:var(--teal);">✓ Done &amp; verified</h3>
+      <ul>
+        <li>Pinecone storing 136 visual + 83 spoken vectors</li>
+        <li>Cloudinary serving real CDN thumbnails</li>
+        <li>Cache hit returns instantly on repeat URL</li>
+        <li>Worker serializes jobs; status in Redis</li>
+        <li>Full index runs end-to-end in ~4.5 min (CPU)</li>
+        <li>All 3 services connect (<code>check_cloud.py</code> passes)</li>
+        <li>Frontend runs locally against the backend</li>
+        <li>Git repo initialized; <code>.env</code> safely ignored</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0; color:var(--p3);">◷ Still to do</h3>
+      <ul>
+        <li>Push repo to GitHub (<code>git add → commit → push</code>)</li>
+        <li>Deploy backend → Hugging Face Space (+ 9 secrets)</li>
+        <li>Deploy frontend → Vercel (root = <code>frontend</code>, set <code>VITE_API_BASE_URL</code>)</li>
+        <li>Optional: rename the product (frontend display only)</li>
+        <li>Optional: polish frontend / final UI pass</li>
+      </ul>
+      <p class="small" style="margin-bottom:0;">All steps written up in <code>DEPLOY.md</code>.</p>
+    </div>
+  </div>
+
+  <h3>Mini glossary (plain English)</h3>
+  <table>
+    <tr><th>Term</th><th>In one line</th></tr>
+    <tr><td><b>Embedding / vector</b></td><td>A list of numbers that captures meaning; similar things → nearby vectors</td></tr>
+    <tr><td><b>Cosine similarity</b></td><td>The angle between two vectors — how "alike" they are (1 = identical)</td></tr>
+    <tr><td><b>Namespace</b></td><td>A labelled bucket inside a Pinecone index — here, one per video</td></tr>
+    <tr><td><b>Upsert</b></td><td>Insert-or-update a vector by id</td></tr>
+    <tr><td><b>CDN</b></td><td>A global network that serves files (images) fast from near the user</td></tr>
+    <tr><td><b>Worker / queue</b></td><td>A background runner that takes jobs one at a time</td></tr>
+    <tr><td><b>Idempotent</b></td><td>Doing it twice has the same effect as once (safe to retry)</td></tr>
+    <tr><td><b>Ephemeral host</b></td><td>A server whose disk gets wiped on restart — so we keep state in the cloud</td></tr>
+  </table>
+
+  <div class="center" style="margin-top:26px;">
+    <div style="font-family:'Space Mono',monospace; font-size:13px;
+      background:linear-gradient(120deg,var(--p1),var(--p2),var(--p3));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
+      Week 2 = working demo · Week 3 = cloud product. Same brains, cloud body. ☁</div>
+  </div>
+  <div class="foot"><span>09 · Status &amp; Glossary</span><span>VibeSeek · Week 3 · End</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+# VibeSeek Week 1 — Python dependencies
+
+# Core ML
+torch>=2.0.0
+torchvision>=0.15.0
+git+https://github.com/openai/CLIP.git   # OpenAI CLIP
+
+# Video processing
+opencv-python>=4.8.0
+yt-dlp>=2024.1.0                          # YouTube downloader (actively maintained fork of youtube-dl)
+
+# API
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+
+# Utils
+numpy>=1.24.0
+Pillow>=10.0.0
+pydantic>=2.0.0
+
+# Week 2 additions
+openai-whisper                           # Speech-to-text transcription (base model)
+librosa>=0.10.0                          # Beat detection + energy analysis
+# chromadb>=0.5.0                        # Week 2 local vector store — replaced by Pinecone in Week 3
+sentence-transformers>=2.2.0             # MiniLM embeddings for semantic transcript search
+
+# Week 3 additions — cloud services (all free tier, no credit card)
+pinecone>=5.0.0                          # Cloud vector DB (replaces ChromaDB)
+cloudinary>=1.40.0                       # Frame thumbnail hosting/CDN (replaces local /frames)
+redis>=5.0.0                             # Upstash Redis: job queue + global index registry
+python-dotenv>=1.0.0                     # Load cloud credentials from .env locally
+requests>=2.31.0                         # Calls the free Groq API for AI-written summaries (optional)
+
+# NOTE: Whisper and librosa require ffmpeg on PATH (yt-dlp already needs it for
+# merging video+audio, so it should already be installed).

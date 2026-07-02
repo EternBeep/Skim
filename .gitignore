@@ -1,0 +1,11 @@
+# Secrets — never commit these
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Local working data (now cloud-backed: Pinecone / Cloudinary / Redis)
+vibeseek_data/
+*.pkl
