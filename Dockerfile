@@ -15,7 +15,11 @@ USER user
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH \
     HF_HOME=/home/user/.cache \
-    VIBESEEK_DATA_DIR=/home/user/app/vibeseek_data
+    VIBESEEK_DATA_DIR=/home/user/app/vibeseek_data \
+    # Disable Python-level SSL cert verification — YouTube's TLS handshake fails
+    # on the hardened OpenSSL build inside HF Spaces Docker containers.
+    PYTHONHTTPSVERIFY=0 \
+    PYTHONWARNINGS=ignore:Unverified
 WORKDIR /home/user/app
 
 # Install deps first for better layer caching. Pin torch to the CPU wheels so the
@@ -24,6 +28,11 @@ COPY --chown=user requirements.txt ./
 RUN pip install --no-cache-dir --user \
         torch torchvision --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir --user -r requirements.txt
+
+# Always upgrade yt-dlp to the absolute latest release after the main install.
+# YouTube regularly changes its API; an outdated yt-dlp is the #1 cause of
+# SSL / extraction errors on cloud deployments.
+RUN pip install --no-cache-dir --user --upgrade yt-dlp
 
 # Copy the backend source (the frontend deploys separately on Vercel).
 COPY --chown=user . .

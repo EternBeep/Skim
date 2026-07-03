@@ -4,10 +4,31 @@ Frame Extractor: Downloads YouTube video and extracts frames at regular interval
 """
 
 import os
+import re
+import ssl
 import cv2
 import yt_dlp
 from pathlib import Path
 from dataclasses import dataclass
+
+# ---------------------------------------------------------------------------
+# Module-level SSL patch — must run before any network call.
+# HuggingFace Spaces uses a hardened OpenSSL build that rejects YouTube's TLS
+# handshake at the Python socket layer, before yt-dlp options even apply.
+# Disabling cert verification here fixes both get_video_id and download_video.
+# ---------------------------------------------------------------------------
+try:
+    ssl._create_default_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass  # not available on all builds; safe to skip
+
+# Regex patterns covering every common YouTube URL format.
+# Used by get_video_id() to extract the 11-char video ID without any network call.
+_YT_ID_RE = re.compile(
+    r"(?:youtube\.com/(?:watch\?(?:.*&)?v=|embed/|v/|shorts/)"
+    r"|youtu\.be/)"
+    r"([a-zA-Z0-9_-]{11})"
+)
 
 #datclass is use to creat a cleaner function style instead of the original one
 # dataclasses.dataclass() is a decorator that automatically generates the __init__ and __repr__ methods
@@ -128,21 +149,32 @@ def extract_frames(
 
 def get_video_id(youtube_url: str) -> str:
     """
-    Resolves a YouTube URL to its video id WITHOUT downloading the video.
-    yt-dlp does a lightweight metadata fetch (download=False), letting us check the
-    cache (goal #3) before paying for a full download + processing pass.
+    Extracts the YouTube video ID from a URL.
+
+    Fast path: regex parse — covers every standard YouTube URL format with
+    zero network calls and zero SSL exposure. This is what runs for the cache
+    check (goal #3) on every /index request.
+
+    Slow path: yt-dlp metadata fetch — only triggered for unusual/shortened
+    URLs that don't match the regex (e.g. custom vanity URLs, playlists).
     """
+    # Fast path — no network, no SSL.
+    match = _YT_ID_RE.search(youtube_url)
+    if match:
+        return match.group(1)
+
+    # Slow path — yt-dlp lightweight fetch (download=False).
+    print(f"[FrameExtractor] URL did not match regex, falling back to yt-dlp: {youtube_url}")
     ydl_opts = {
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,        # metadata only — no bytes pulled
-        # Same SSL / network fixes as download_video() above.
-        "nocheckcertificate": True,
+        "nocheckcertificate": True,   # SSL handled at Python level above, belt+suspenders
         "legacy_server_connect": True,
-        "source_address": "0.0.0.0",
+        "source_address": "0.0.0.0", # force IPv4 — HF Spaces IPv6 is unreliable
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(youtube_url, download=False)  # just resolve the id
+        info = ydl.extract_info(youtube_url, download=False)
     return info["id"]
 
 
