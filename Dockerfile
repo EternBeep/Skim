@@ -3,8 +3,10 @@ FROM python:3.11-slim
 
 # ffmpeg: required by yt-dlp (muxing), Whisper and librosa (audio decoding).
 # git:    required to pip-install OpenAI CLIP from GitHub.
+# ca-certificates: keep the TLS cert store fresh to avoid SSL EOF errors from YouTube.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        ffmpeg git \
+        ffmpeg git ca-certificates \
+    && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # HF Spaces runs containers as a non-root user (uid 1000). Set up a writable home.

@@ -44,6 +44,12 @@ def download_video(youtube_url: str, output_dir: str = "downloads") -> tuple[str
         "outtmpl": f"{output_dir}/%(id)s.%(ext)s",#this is used to save the video in the downloaded file folder
         "quiet": True,#keeps output clean
         "no_warnings": True,#keeps output clean
+        # SSL / network fixes for HuggingFace Spaces and restricted environments.
+        # HF containers run on OpenSSL builds that reject certain TLS handshakes
+        # from YouTube; these three options work around that reliably.
+        "nocheckcertificate": True,        # skip TLS cert verification (safe in a closed server env)
+        "legacy_server_connect": True,     # allow OpenSSL legacy renegotiation (fixes EOF error)
+        "source_address": "0.0.0.0",      # force IPv4 binding — HF Spaces IPv6 routing is unreliable
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -130,6 +136,10 @@ def get_video_id(youtube_url: str) -> str:
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,        # metadata only — no bytes pulled
+        # Same SSL / network fixes as download_video() above.
+        "nocheckcertificate": True,
+        "legacy_server_connect": True,
+        "source_address": "0.0.0.0",
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(youtube_url, download=False)  # just resolve the id

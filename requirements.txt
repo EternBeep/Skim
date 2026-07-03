@@ -7,7 +7,7 @@ git+https://github.com/openai/CLIP.git   # OpenAI CLIP
 
 # Video processing
 opencv-python>=4.8.0
-yt-dlp>=2024.1.0                          # YouTube downloader (actively maintained fork of youtube-dl)
+yt-dlp>=2024.11.0                          # YouTube downloader — keep recent for YouTube API compat
 
 # API
 fastapi>=0.111.0
