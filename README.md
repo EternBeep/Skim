@@ -1,3 +1,13 @@
+---
+title: Skim
+emoji: 🎬
+colorFrom: purple
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # VibeSeek — Week 1
 > Semantic video search: paste a YouTube URL, describe a vibe, jump to that timestamp.
 
