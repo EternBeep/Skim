@@ -8,6 +8,7 @@ import SummaryPanel from "./components/SummaryPanel";
 import AudioPanel from "./components/AudioPanel";
 import ResultsGrid from "./components/ResultsGrid";
 import HowItWorks from "./components/HowItWorks";
+import WelcomeScreen from "./components/WelcomeScreen";
 import "./App.css";
 
 export default function App() {
@@ -22,6 +23,14 @@ export default function App() {
   const [error, setError] = useState("");
   const [audio, setAudio] = useState(null);
   const pollRef = useRef(null);
+  const [showWelcome, setShowWelcome] = useState(
+    () => localStorage.getItem("skim_welcomed") !== "1"
+  );
+
+  function handleContinue() {
+    localStorage.setItem("skim_welcomed", "1");
+    setShowWelcome(false);
+  }
 
   useEffect(() => {
     if (!jobId) return;
@@ -102,6 +111,10 @@ export default function App() {
 
   return (
     <div className="app">
+      <AnimatePresence>
+        {showWelcome && <WelcomeScreen onContinue={handleContinue} />}
+      </AnimatePresence>
+
       <div className="app__noise" aria-hidden="true" />
       <div className="app__glow app__glow--1" aria-hidden="true" />
       <div className="app__glow app__glow--2" aria-hidden="true" />
