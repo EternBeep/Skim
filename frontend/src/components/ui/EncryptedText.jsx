@@ -39,7 +39,7 @@ export function EncryptedText({
           .split("")
           .map((c, i) => (mask[i] ? c : c === " " ? " " : rnd())),
       }));
-    }, 40);
+    }, 70);
 
     // Reveal one character at a time
     const revealId = setInterval(() => {

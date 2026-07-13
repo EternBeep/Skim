@@ -1057,16 +1057,50 @@
   flex-shrink: 0;
 }
 
+/* Two-line headline container */
+.splash__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+/* "Welcome to" — smaller, muted line above */
+.splash__pre {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-muted);
+}
+
+/* "Skim." — the big encrypted line */
 .splash__title {
   font-family: var(--font-display);
-  font-size: clamp(44px, 10vw, 84px);
+  font-size: clamp(64px, 14vw, 120px);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
+  letter-spacing: -0.05em;
+  line-height: 1;
   color: var(--text-primary);
   margin: 0;
-  /* prevent layout shift while characters swap */
-  min-width: 12ch;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+/* Blinking terminal cursor */
+.splash__cursor {
+  display: inline-block;
+  color: #0ea5e9;
+  font-weight: 300;
+  animation: blink-cursor 0.9s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 
 .splash__sub {
@@ -1076,6 +1110,7 @@
   color: var(--text-muted);
   margin: 0;
 }
+
 
 /* EncryptedText character states */
 .enc-hidden {

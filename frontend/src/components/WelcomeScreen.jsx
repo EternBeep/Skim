@@ -64,10 +64,10 @@ const fadeUp = {
 function SplashPhase({ onDone }) {
   const [encDone, setEncDone] = useState(false);
 
-  // After the encrypt animation finishes, wait 1.4 s then advance
+  // After reveal finishes, wait 2.2 s then advance (gives cursor time to blink)
   useEffect(() => {
     if (!encDone) return;
-    const t = setTimeout(onDone, 1400);
+    const t = setTimeout(onDone, 2200);
     return () => clearTimeout(t);
   }, [encDone, onDone]);
 
@@ -77,44 +77,71 @@ function SplashPhase({ onDone }) {
       key="splash"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: -24, filter: "blur(6px)" }}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      exit={{ opacity: 0, y: -32, filter: "blur(8px)" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* tiny label */}
       <motion.div
         className="splash__label"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
       >
         <span className="splash__dot" aria-hidden="true" />
         Semantic video search
       </motion.div>
 
-      {/* main encrypted headline */}
-      <motion.h1
-        className="splash__title"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <EncryptedText
-          text="Welcome to Skim."
-          encryptedClassName="enc-hidden"
-          revealedClassName="enc-visible"
-          revealDelayMs={55}
-          onComplete={() => setEncDone(true)}
-        />
-      </motion.h1>
+      {/* two-line headline — "Welcome to" then "Skim." */}
+      <div className="splash__headline">
+        {/* first line fades in quietly */}
+        <motion.div
+          className="splash__pre"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          Welcome to
+        </motion.div>
 
-      {/* subtle sub-line that fades in once text is done */}
+        {/* second line — encrypted reveal */}
+        <motion.h1
+          className="splash__title"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <EncryptedText
+            text="Skim."
+            encryptedClassName="enc-hidden"
+            revealedClassName="enc-visible"
+            revealDelayMs={130}
+            onComplete={() => setEncDone(true)}
+          />
+          {/* blinking cursor — appears once text is revealed */}
+          <AnimatePresence>
+            {encDone && (
+              <motion.span
+                className="splash__cursor"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                aria-hidden="true"
+              >
+                |
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.h1>
+      </div>
+
+      {/* sub-line fades in after reveal */}
       <AnimatePresence>
         {encDone && (
           <motion.p
             className="splash__sub"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             Loading your workspace…
           </motion.p>
