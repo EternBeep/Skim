@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ScanLine } from "lucide-react";
+import { CanvasText } from "./ui/CanvasText";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -32,7 +33,20 @@ export default function Header() {
         custom={1}
       >
         Skim
-        <span className="header__title-accent">the moment</span>
+        <span className="header__title-canvas">
+          <CanvasText
+            text="the moment"
+            backgroundColor="#0369a1"
+            colors={[
+              "rgba(0, 153, 255, 0)",
+              "rgba(0, 153, 255, 0.5)",
+              "rgba(255, 255, 255, 0.9)",
+              "rgba(0, 153, 255, 0.5)",
+              "rgba(0, 153, 255, 0)",
+            ]}
+            animationDuration={5}
+          />
+        </span>
       </motion.h1>
 
       <motion.p
