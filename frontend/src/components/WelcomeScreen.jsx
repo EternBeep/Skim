@@ -6,7 +6,7 @@ import {
   Layers,
   ScanLine,
   ArrowRight,
-  Youtube,
+  Video,
   Mic,
   Eye,
   Shuffle,
@@ -14,7 +14,7 @@ import {
 
 const TIPS = [
   {
-    icon: Youtube,
+    icon: Video,
     title: "Paste any YouTube URL",
     desc: "Copy the full URL from your browser bar or share menu. Hit Index and Skim will start processing the video in the background.",
     color: "#ff4444",
