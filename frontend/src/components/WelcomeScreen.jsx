@@ -239,8 +239,23 @@ function TipsPhase({ onContinue }) {
 
 /* ─── Root export ────────────────────────────────────────────────────── */
 
-export default function WelcomeScreen({ onContinue }) {
+/**
+ * firstVisit  — true if localStorage flag not yet set (show tips after splash)
+ * onSplashDone — called by the splash when it finishes and user is a returning visitor
+ * onContinue   — called when user clicks "Let's go" in the tips phase
+ */
+export default function WelcomeScreen({ onContinue, firstVisit = true, onSplashDone }) {
+  // Splash always shows; tips only for first-time visitors
   const [phase, setPhase] = useState("splash"); // "splash" | "tips"
+
+  function handleSplashDone() {
+    if (firstVisit) {
+      setPhase("tips");
+    } else {
+      // returning user — skip tips and unmount the whole overlay
+      onSplashDone?.();
+    }
+  }
 
   return (
     <motion.div
@@ -256,7 +271,7 @@ export default function WelcomeScreen({ onContinue }) {
 
       <AnimatePresence mode="wait">
         {phase === "splash" ? (
-          <SplashPhase key="splash" onDone={() => setPhase("tips")} />
+          <SplashPhase key="splash" onDone={handleSplashDone} />
         ) : (
           <TipsPhase key="tips" onContinue={onContinue} />
         )}
@@ -264,3 +279,4 @@ export default function WelcomeScreen({ onContinue }) {
     </motion.div>
   );
 }
+

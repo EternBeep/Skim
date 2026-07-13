@@ -23,13 +23,20 @@ export default function App() {
   const [error, setError] = useState("");
   const [audio, setAudio] = useState(null);
   const pollRef = useRef(null);
-  const [showWelcome, setShowWelcome] = useState(
-    () => localStorage.getItem("skim_welcomed") !== "1"
-  );
+  // Splash always shows on every page load (it's brief — just 3s)
+  const [showSplash, setShowSplash] = useState(true);
+  // Tips only show on first ever visit
+  const firstVisit = localStorage.getItem("skim_welcomed") !== "1";
 
   function handleContinue() {
     localStorage.setItem("skim_welcomed", "1");
-    setShowWelcome(false);
+    setShowSplash(false);
+  }
+
+  function handleSplashDone() {
+    // If already visited, skip tips entirely and go straight to app
+    if (!firstVisit) setShowSplash(false);
+    // else WelcomeScreen will show tips phase and user clicks "Let's go"
   }
 
   useEffect(() => {
@@ -112,7 +119,13 @@ export default function App() {
   return (
     <div className="app">
       <AnimatePresence>
-        {showWelcome && <WelcomeScreen onContinue={handleContinue} />}
+        {showSplash && (
+          <WelcomeScreen
+            onContinue={handleContinue}
+            firstVisit={firstVisit}
+            onSplashDone={handleSplashDone}
+          />
+        )}
       </AnimatePresence>
 
       <div className="app__noise" aria-hidden="true" />
