@@ -11,14 +11,16 @@ const rnd = () => POOL[Math.floor(Math.random() * POOL.length)];
  *  text              — the string to reveal
  *  encryptedClassName — className while character is still scrambling
  *  revealedClassName  — className once character is locked in
- *  revealDelayMs      — ms between each character reveal (default 50)
+ *  revealDelayMs      — ms between each character reveal (default 100)
+ *  startDelayMs       — ms to wait before starting the effect (default 0)
  *  onComplete         — callback fired when all characters are revealed
  */
 export function EncryptedText({
   text,
   encryptedClassName = "enc-hidden",
   revealedClassName = "enc-visible",
-  revealDelayMs = 50,
+  revealDelayMs = 100,
+  startDelayMs = 0,
   onComplete,
 }) {
   const [state, setState] = useState(() => ({
@@ -26,8 +28,19 @@ export function EncryptedText({
     revealed: new Array(text.length).fill(false),
   }));
 
+  const [started, setStarted] = useState(startDelayMs === 0);
+
+  // Handle the start delay
   useEffect(() => {
-    // local mask so both intervals share truth without stale closure
+    if (startDelayMs <= 0) return;
+    const t = setTimeout(() => setStarted(true), startDelayMs);
+    return () => clearTimeout(t);
+  }, [startDelayMs]);
+
+  // Run the actual scramble + reveal only after started is true
+  useEffect(() => {
+    if (!started) return;
+
     const mask = new Array(text.length).fill(false);
     let idx = 0;
 
@@ -39,14 +52,13 @@ export function EncryptedText({
           .split("")
           .map((c, i) => (mask[i] ? c : c === " " ? " " : rnd())),
       }));
-    }, 70);
+    }, 60);
 
     // Reveal one character at a time
     const revealId = setInterval(() => {
       if (idx >= text.length) {
         clearInterval(revealId);
         clearInterval(scrambleId);
-        // snap to final state cleanly
         setState({
           chars: text.split(""),
           revealed: new Array(text.length).fill(true),
@@ -71,7 +83,7 @@ export function EncryptedText({
       clearInterval(revealId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);   // intentionally run once on mount
+  }, [started]);
 
   return (
     <span aria-label={text} role="text">

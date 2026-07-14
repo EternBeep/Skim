@@ -1103,24 +1103,69 @@
   50%       { opacity: 0; }
 }
 
-.splash__sub {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+/* Tagline — appears after reveal */
+.splash__tagline {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 420px;
+  text-align: center;
+  line-height: 1.65;
   margin: 0;
 }
 
+.splash__tagline em {
+  font-style: normal;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* CTA area */
+.splash__cta {
+  margin-top: 12px;
+}
+
+.btn--enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: var(--text-inverse);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  padding: 16px 40px;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  min-height: 56px;
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.btn--enter:hover {
+  background: #e5e5e5;
+  transform: translateY(-3px);
+  box-shadow: 0 0 70px rgba(255, 255, 255, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.btn--enter:active {
+  transform: scale(0.97) translateY(0);
+}
 
 /* EncryptedText character states */
 .enc-hidden {
   color: var(--text-muted);
+  font-family: var(--font-mono);
   transition: color 80ms;
 }
 
 .enc-visible {
   color: var(--text-primary);
-  transition: color 120ms ease-out;
+  transition: color 150ms ease-out;
 }
 
 /* ═══════════════════════════════════════
