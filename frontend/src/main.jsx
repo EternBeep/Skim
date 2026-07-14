@@ -8,3 +8,9 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+// Remove the HTML preloader once React has painted the welcome screen
+requestAnimationFrame(() => {
+  const el = document.getElementById('preloader')
+  if (el) el.remove()
+})

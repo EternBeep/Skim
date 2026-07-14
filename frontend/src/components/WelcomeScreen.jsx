@@ -84,29 +84,14 @@ export default function WelcomeScreen({ onContinue }) {
           </motion.h1>
         </div>
 
-        {/* tagline — appears after reveal */}
-        <AnimatePresence>
-          {encDone && (
-            <motion.p
-              className="splash__tagline"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              Search any YouTube video by what was <em>seen</em> and what was{" "}
-              <em>said</em>.
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        {/* CTA button — appears after tagline */}
+        {/* CTA button — appears after reveal */}
         <AnimatePresence>
           {encDone && (
             <motion.div
               className="splash__cta"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <button
                 id="welcome-enter-btn"
