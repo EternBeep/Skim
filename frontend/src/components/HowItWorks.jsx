@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { SpotlightCard } from "./ui/SpotlightCard";
 
 const STEPS = [
   {
@@ -21,23 +22,23 @@ const STEPS = [
 export default function HowItWorks() {
   return (
     <motion.section
-      className="card how-it-works"
+      className="how-it-works"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="card__label">
+      <div className="card__label" style={{ marginBottom: '24px' }}>
         <span className="card__step">?</span>
         How Skim works
       </div>
       <div className="how-it-works__grid">
         {STEPS.map((s) => (
-          <div key={s.n}>
+          <SpotlightCard key={s.n} className="how-it-works__card">
             <div className="how-it-works__item-num">{s.n}</div>
             <div className="how-it-works__item-title">{s.title}</div>
             <div className="how-it-works__item-desc">{s.desc}</div>
-          </div>
+          </SpotlightCard>
         ))}
       </div>
       <div className="how-it-works__footer">

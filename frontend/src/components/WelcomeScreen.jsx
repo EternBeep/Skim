@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { EncryptedText } from "./ui/EncryptedText";
+import { AuroraBackground } from "./ui/AuroraBackground";
+import { FloatingParticles } from "./ui/FloatingParticles";
 
 /**
  * WelcomeScreen — single splash page
@@ -24,9 +26,8 @@ export default function WelcomeScreen({ onContinue }) {
       exit={{ opacity: 0, scale: 0.97, filter: "blur(12px)" }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="welcome__glow welcome__glow--1" aria-hidden="true" />
-      <div className="welcome__glow welcome__glow--2" aria-hidden="true" />
-      <div className="welcome__noise" aria-hidden="true" />
+      <AuroraBackground />
+      <FloatingParticles />
 
       <div className="splash">
         {/* small label */}
