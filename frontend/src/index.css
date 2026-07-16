@@ -1,33 +1,27 @@
-/* Skim — creative design tokens */
+/* Skim — monochrome design tokens */
 :root {
-  --bg-base: #030712;
-  --bg-elevated: #0f172a;
-  --bg-surface: rgba(15, 23, 42, 0.4);
-  --bg-surface-hover: rgba(30, 41, 59, 0.5);
-  --bg-input: rgba(15, 23, 42, 0.6);
+  --bg-base: #050505;
+  --bg-elevated: #0c0c0c;
+  --bg-surface: #111111;
+  --bg-surface-hover: #161616;
+  --bg-input: #0a0a0a;
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-default: rgba(255, 255, 255, 0.15);
-  --border-strong: rgba(255, 255, 255, 0.25);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #020617;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #525252;
+  --text-inverse: #050505;
 
-  /* Accent Gradients */
-  --accent: #38bdf8;
-  --accent-soft: rgba(56, 189, 248, 0.15);
-  --accent-muted: rgba(56, 189, 248, 0.05);
-
-  --color-cyan: #06b6d4;
-  --color-violet: #8b5cf6;
-  --color-blue: #3b82f6;
+  --accent: #ffffff;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-muted: rgba(255, 255, 255, 0.04);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
-  --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.3);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -35,7 +29,7 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-display: "Syne", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
@@ -99,23 +93,4 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-base);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
 }

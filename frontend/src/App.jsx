@@ -9,9 +9,6 @@ import AudioPanel from "./components/AudioPanel";
 import ResultsGrid from "./components/ResultsGrid";
 import HowItWorks from "./components/HowItWorks";
 import WelcomeScreen from "./components/WelcomeScreen";
-import { SpotlightCard } from "./components/ui/SpotlightCard";
-import { AuroraBackground } from "./components/ui/AuroraBackground";
-import { AnimatedGridBackground } from "./components/ui/AnimatedGridBackground";
 import "./App.css";
 
 export default function App() {
@@ -116,85 +113,85 @@ export default function App() {
       </AnimatePresence>
 
 
-      <AnimatedGridBackground />
-      <AuroraBackground />
+      <div className="app__noise" aria-hidden="true" />
+      <div className="app__glow app__glow--1" aria-hidden="true" />
+      <div className="app__glow app__glow--2" aria-hidden="true" />
 
       <Header />
 
       <main className="app__content">
         {/* Step 1 — Index */}
-        <motion.div
+        <motion.section
+          className="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SpotlightCard className="card">
-            <div className="card__label">
-              <span className="card__step">1</span>
-              Index video
-            </div>
-            <div className="input-row">
-              <input
-                className="input"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleIndex()}
-                placeholder="https://www.youtube.com/watch?v=..."
-                aria-label="YouTube URL"
-              />
-              <button
-                className="btn btn--primary"
-                onClick={() => handleIndex()}
-                disabled={indexing || !url.trim()}
-              >
-                {indexing ? (
+          <div className="card__label">
+            <span className="card__step">1</span>
+            Index video
+          </div>
+          <div className="input-row">
+            <input
+              className="input"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleIndex()}
+              placeholder="https://www.youtube.com/watch?v=..."
+              aria-label="YouTube URL"
+            />
+            <button
+              className="btn btn--primary"
+              onClick={() => handleIndex()}
+              disabled={indexing || !url.trim()}
+            >
+              {indexing ? (
+                <>
+                  <Loader2 size={16} className="spin" aria-hidden="true" />
+                  Indexing…
+                </>
+              ) : (
+                <>
+                  <Link2 size={16} aria-hidden="true" />
+                  Index
+                </>
+              )}
+            </button>
+          </div>
+
+          {jobStatus && (
+            <>
+              <div className="status-row">
+                <StatusBadge status={jobStatus.status} />
+                {jobStatus.status === "embedding" && jobStatus.total_frames && (
+                  <span className="status-meta">{jobStatus.total_frames} frames to embed</span>
+                )}
+                {jobStatus.status === "done" && (
                   <>
-                    <Loader2 size={16} className="spin" aria-hidden="true" />
-                    Indexing…
-                  </>
-                ) : (
-                  <>
-                    <Link2 size={16} aria-hidden="true" />
-                    Index
+                    <span className="status-meta status-meta--success">
+                      {jobStatus.frame_count} frames
+                      {jobStatus.has_transcript
+                        ? ` · ${jobStatus.transcript_chunks} transcript chunks`
+                        : " · no speech detected"}
+                      {jobStatus.cached ? " · cached" : ""}
+                    </span>
+                    <button
+                      className="btn btn--ghost"
+                      onClick={() => handleIndex(true)}
+                      disabled={indexing || !url.trim()}
+                      title="Re-process this video from scratch"
+                    >
+                      <RotateCcw size={12} aria-hidden="true" />
+                      Re-index
+                    </button>
                   </>
                 )}
-              </button>
-            </div>
-
-            {jobStatus && (
-              <>
-                <div className="status-row">
-                  <StatusBadge status={jobStatus.status} />
-                  {jobStatus.status === "embedding" && jobStatus.total_frames && (
-                    <span className="status-meta">{jobStatus.total_frames} frames to embed</span>
-                  )}
-                  {jobStatus.status === "done" && (
-                    <>
-                      <span className="status-meta status-meta--success">
-                        {jobStatus.frame_count} frames
-                        {jobStatus.has_transcript
-                          ? ` · ${jobStatus.transcript_chunks} transcript chunks`
-                          : " · no speech detected"}
-                        {jobStatus.cached ? " · cached" : ""}
-                      </span>
-                      <button
-                        className="btn btn--ghost"
-                        onClick={() => handleIndex(true)}
-                        disabled={indexing || !url.trim()}
-                        title="Re-process this video from scratch"
-                      >
-                        <RotateCcw size={12} aria-hidden="true" />
-                        Re-index
-                      </button>
-                    </>
-                  )}
-                  <StatusMessage status={jobStatus.status} />
-                </div>
-                <IndexProgress status={jobStatus.status} />
-              </>
-            )}
-          </SpotlightCard>
-        </motion.div>
+                <StatusMessage status={jobStatus.status} />
+              </div>
+              <IndexProgress status={jobStatus.status} />
+            </>
+          )}
+        </motion.section>
 
         <AnimatePresence>
           {jobStatus?.status === "done" && (
@@ -208,61 +205,60 @@ export default function App() {
         <AnimatePresence>{videoId && <AudioPanel data={audio} />}</AnimatePresence>
 
         {/* Step 2 — Search */}
-        <motion.div
+        <motion.section
+          className={`card${!videoId ? " card--disabled" : ""}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SpotlightCard className={`card${!videoId ? " card--disabled" : ""}`}>
-            <div className="card__label">
-              <span className="card__step">2</span>
-              Search by vibe
-            </div>
+          <div className="card__label">
+            <span className="card__step">2</span>
+            Search by vibe
+          </div>
 
-            <div className="chips">
-              {VIBE_SUGGESTIONS.map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  className={`btn btn--chip${query === v ? " is-active" : ""}`}
-                  onClick={() => setQuery(v)}
-                  disabled={!videoId}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-
-            <div className="input-row">
-              <input
-                className="input"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Describe a vibe, a moment, or something that was said…"
-                disabled={!videoId}
-                aria-label="Search query"
-              />
+          <div className="chips">
+            {VIBE_SUGGESTIONS.map((v) => (
               <button
-                className="btn btn--primary"
-                onClick={handleSearch}
-                disabled={searching || !videoId || !query.trim()}
+                key={v}
+                type="button"
+                className={`btn btn--chip${query === v ? " is-active" : ""}`}
+                onClick={() => setQuery(v)}
+                disabled={!videoId}
               >
-                {searching ? (
-                  <>
-                    <Loader2 size={16} className="spin" aria-hidden="true" />
-                    Searching…
-                  </>
-                ) : (
-                  <>
-                    <Search size={16} aria-hidden="true" />
-                    Search
-                  </>
-                )}
+                {v}
               </button>
-            </div>
-          </SpotlightCard>
-        </motion.div>
+            ))}
+          </div>
+
+          <div className="input-row">
+            <input
+              className="input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              placeholder="Describe a vibe, a moment, or something that was said…"
+              disabled={!videoId}
+              aria-label="Search query"
+            />
+            <button
+              className="btn btn--primary"
+              onClick={handleSearch}
+              disabled={searching || !videoId || !query.trim()}
+            >
+              {searching ? (
+                <>
+                  <Loader2 size={16} className="spin" aria-hidden="true" />
+                  Searching…
+                </>
+              ) : (
+                <>
+                  <Search size={16} aria-hidden="true" />
+                  Search
+                </>
+              )}
+            </button>
+          </div>
+        </motion.section>
 
         <AnimatePresence>
           {error && (

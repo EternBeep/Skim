@@ -49,9 +49,9 @@ export default function ResultsGrid({ results, query }) {
               href={r.youtube_url}
               target="_blank"
               rel="noreferrer"
-              className="result-card result-card--shine"
+              className="result-card"
               variants={item}
-              whileHover={{ y: -3, scale: 1.02 }}
+              whileHover={{ y: -3 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="result-card__thumb">

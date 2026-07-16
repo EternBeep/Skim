@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { ScanLine } from "lucide-react";
 import { CanvasText } from "./ui/CanvasText";
-import { TextShimmer } from "./ui/TextShimmer";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -14,7 +13,7 @@ const fadeUp = {
 
 export default function Header() {
   return (
-    <header className="header relative z-10">
+    <header className="header">
       <motion.div
         className="header__badge"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -33,17 +32,17 @@ export default function Header() {
         animate="visible"
         custom={1}
       >
-        <TextShimmer text="Skim" />
+        Skim
         <span className="header__title-canvas">
           <CanvasText
             text="the moment"
-            backgroundColor="transparent"
+            backgroundColor="#0369a1"
             colors={[
-              "rgba(6, 182, 212, 0)",
-              "rgba(6, 182, 212, 0.5)",
+              "rgba(0, 153, 255, 0)",
+              "rgba(0, 153, 255, 0.5)",
               "rgba(255, 255, 255, 0.9)",
-              "rgba(139, 92, 246, 0.5)",
-              "rgba(139, 92, 246, 0)",
+              "rgba(0, 153, 255, 0.5)",
+              "rgba(0, 153, 255, 0)",
             ]}
             animationDuration={5}
           />
